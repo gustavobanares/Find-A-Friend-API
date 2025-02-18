@@ -1,4 +1,6 @@
-# Pet Adoption App
+# App
+
+Pet Adoption App
 
 ## Requisitos Funcionais (RFs)
 

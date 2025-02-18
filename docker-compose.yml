@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  api-solid-pg:
+    image: bitnami/postgresql
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=pet
+      - POSTGRES_PASSWORD=pet
+      - POSTGRES_DB=findafriend
+    volumes:
+      - postgres_data:/bitnami/postgresql
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

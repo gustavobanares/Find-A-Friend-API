@@ -43,61 +43,42 @@ enum PetType {
 }
 
 model Pet {
-  id            String      @id @default(uuid())
-  name          String
-  description   String
-  age           PetAge      
-  size          PetSize      
-  energy        PetEnergy      
-  independence  PetIndependence      
-  type          PetType      
-  photos        Photo[]
-  requirements  Requirement[]
-  
-  organization  Organization @relation(fields: [organizationId], references: [id])
+  id           String          @id @default(uuid())
+  name         String
+  description  String
+  age          PetAge
+  size         PetSize
+  energy       PetEnergy
+  independence PetIndependence
+  type         PetType
+  photos       String[]
+  requirements String[]
+
+  organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
-  
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("pets")
 }
 
-model Photo {
-  id      String @id @default(uuid())
-  url     String
-  
-  pet     Pet    @relation(fields: [petId], references: [id], onDelete: Cascade)
-  petId   String
-
-  @@map("photos")
-}
-
-model Requirement {
-  id      String @id @default(uuid())
-  title   String
-  
-  pet     Pet    @relation(fields: [petId], references: [id], onDelete: Cascade)
-  petId   String
-
-  @@map("requirements")
-}
-
 model Organization {
-  id              String @id @default(uuid())
-  name            String
-  email           String @unique
-  passwordHash    String
-  
-  address         String
-  city            String
-  state           String
-  postalCode      String
-  phone           String  // WhatsApp
-  
-  pets            Pet[]
-  
-  createdAt       DateTime @default(now())
+  id           String @id @default(uuid())
+  name         String
+  email        String @unique
+  passwordHash String
+
+  address    String
+  city       String
+  state      String
+  postalCode String
+  phone      String // WhatsApp
+
+  pets Pet[]
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @default(now())
 
   @@map("organizations")
-}  
+}

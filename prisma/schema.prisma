@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,10 +10,94 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id String @id @default(uuid())
-  name String
-  email String @unique
-
-  @@map("users")
+enum PetAge {
+  FILHOTE
+  ADULTO
+  IDOSO
 }
+
+enum PetSize {
+  PEQUENO
+  MEDIO
+  GRANDE
+}
+
+enum PetEnergy {
+  BAIXA
+  MEDIA
+  ALTA
+}
+
+enum PetIndependence {
+  BAIXO
+  MEDIO
+  ALTO
+}
+
+enum PetType {
+  CACHORRO
+  GATO
+  AVE
+  ROEDOR
+  OUTRO
+}
+
+model Pet {
+  id            String      @id @default(uuid())
+  name          String
+  description   String
+  age           PetAge      
+  size          PetSize      
+  energy        PetEnergy      
+  independence  PetIndependence      
+  type          PetType      
+  photos        Photo[]
+  requirements  Requirement[]
+  
+  organization  Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("pets")
+}
+
+model Photo {
+  id      String @id @default(uuid())
+  url     String
+  
+  pet     Pet    @relation(fields: [petId], references: [id], onDelete: Cascade)
+  petId   String
+
+  @@map("photos")
+}
+
+model Requirement {
+  id      String @id @default(uuid())
+  title   String
+  
+  pet     Pet    @relation(fields: [petId], references: [id], onDelete: Cascade)
+  petId   String
+
+  @@map("requirements")
+}
+
+model Organization {
+  id              String @id @default(uuid())
+  name            String
+  email           String @unique
+  passwordHash    String
+  
+  address         String
+  city            String
+  state           String
+  postalCode      String
+  phone           String  // WhatsApp
+  
+  pets            Pet[]
+  
+  createdAt       DateTime @default(now())
+
+  @@map("organizations")
+}  

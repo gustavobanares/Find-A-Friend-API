@@ -1,9 +1,17 @@
-import { Organization, Prisma } from "@prisma/client";
+import { Organization, Pet, Prisma } from "@prisma/client";
 import crypto from "node:crypto";
 import { OrganizationRepository } from "../organization-repository";
 
 export class InMemoryOrganizationRepository implements OrganizationRepository {
+  
   public items: Organization[] = [];
+  petRepository: any;
+
+  async findAvailableByCity(city: string): Promise<Organization[]> {
+    // Encontra as organizações na cidade fornecida
+    const organizationsInCity = this.items.filter((org) => org.city === city);
+    return organizationsInCity;
+  }
 
   async findByEmail(email: string) {
     const organization = this.items.find((item) => item.email === email);

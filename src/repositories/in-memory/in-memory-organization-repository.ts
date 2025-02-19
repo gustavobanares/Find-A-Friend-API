@@ -15,6 +15,21 @@ export class InMemoryOrganizationRepository implements OrganizationRepository {
     return organization;
   }
 
+  async createMinimal(data: {
+    name: string;
+    email: string;
+    passwordHash: string;
+  }) {
+    return this.create({
+      ...data,
+      address: "default address",
+      city: "default city",
+      state: "default state",
+      postalCode: "00000-000",
+      phone: "000000000",
+    });
+  }
+
   async create(data: Prisma.OrganizationCreateInput) {
     const organization = {
       id: crypto.randomUUID(),

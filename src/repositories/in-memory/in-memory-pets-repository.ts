@@ -3,7 +3,7 @@ import { Pet, Prisma } from "@prisma/client";
 import crypto from 'node:crypto'
 
 export class InMemoryPetsRepository implements PetsRepository {
-   
+    
     public items: Pet[] = [];
 
     async create(data: Prisma.PetUncheckedCreateInput){
@@ -19,4 +19,8 @@ export class InMemoryPetsRepository implements PetsRepository {
         return pet
     }
 
+    async findByOrganizationId(organizationId: string): Promise<Pet[]> {
+        const pets = this.items.filter(pet => pet.organizationId === organizationId);
+        return pets;
+    }
 }

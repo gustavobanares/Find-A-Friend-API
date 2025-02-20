@@ -11,7 +11,12 @@ import {
 import crypto from "node:crypto";
 
 export class InMemoryPetsRepository implements PetsRepository {
+ 
   public items: Pet[] = [];
+
+  async findById(petId: string) {
+    return this.items.find((pet) => pet.id === petId) || null
+  }
 
   async create(data: Prisma.PetUncheckedCreateInput) {
     const pet = {

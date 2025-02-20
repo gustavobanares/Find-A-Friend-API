@@ -1,8 +1,9 @@
 import fastify from "fastify";
-import { PrismaClient } from "@prisma/client";
+import { petsRoutes } from "./http/controllers/pets/routes";
+import { organizationRoutes } from "./http/controllers/organization/routes";
 
 export const app = fastify()
 
-const prisma = new PrismaClient()
 
-
+app.register(petsRoutes)
+app.register(organizationRoutes)

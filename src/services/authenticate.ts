@@ -5,7 +5,7 @@ import { OrganizationRepository } from "@/repositories/organization-repository";
 
 interface AuthenticateUseCaseRequest {
   email: string;
-  password_hash: string;
+  passwordHash: string;
 }
 
 interface AuthenticateUseCaseResponse {
@@ -17,7 +17,7 @@ export class AuthenticateUseCase {
 
   async execute({
     email,
-    password_hash,
+    passwordHash,
   }: AuthenticateUseCaseRequest): Promise<AuthenticateUseCaseResponse> {
     const organization = await this.organizationRepository.findByEmail(email)
 
@@ -25,7 +25,7 @@ export class AuthenticateUseCase {
         throw new InvalidCredentialsError()
     }
 
-    const doesPasswordMatches = await compare(password_hash, organization.passwordHash)
+    const doesPasswordMatches = await compare(passwordHash, organization.passwordHash)
 
     if(!doesPasswordMatches){
         throw new InvalidCredentialsError()

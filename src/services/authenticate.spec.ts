@@ -22,7 +22,7 @@ describe("Authenticate Use Case", () => {
 
     const { organization } = await sut.execute({
       email: "johndoe@example.com",
-      password_hash: "123456",
+      passwordHash: "123456",
     });
 
     expect(organization.id).toEqual(expect.any(String));
@@ -32,7 +32,7 @@ describe("Authenticate Use Case", () => {
     await expect(() =>
       sut.execute({
         email: "johndoe@example.com",
-        password_hash: "123456",
+        passwordHash: "123456",
       })
     ).rejects.toBeInstanceOf(InvalidCredentialsError);
   });
@@ -47,7 +47,7 @@ describe("Authenticate Use Case", () => {
     await expect(() =>
       sut.execute({
         email: "johndoe@example.com",
-        password_hash: "123123",
+        passwordHash: "123123",
       })
     ).rejects.toBeInstanceOf(InvalidCredentialsError);
   });

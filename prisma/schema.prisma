@@ -42,6 +42,11 @@ enum PetType {
   OUTRO
 }
 
+enum Role {
+  ADMIN
+  MEMBER
+}
+
 model Pet {
   id           String          @id @default(uuid())
   name         String
@@ -68,12 +73,12 @@ model Organization {
   name         String
   email        String @unique
   passwordHash String
-
-  address    String
-  city       String
-  state      String
-  postalCode String
-  phone      String // WhatsApp
+  address      String
+  city         String
+  state        String
+  postalCode   String
+  phone        String
+  role         Role   @default(MEMBER)
 
   pets Pet[]
 

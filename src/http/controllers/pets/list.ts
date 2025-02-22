@@ -6,12 +6,13 @@ export async function list(request: FastifyRequest, reply: FastifyReply) {
   const listAvailableUseCase = makeListAvailablePetsUseCase();
 
   const querySchema = z.object({
-    city: z.string().min(1, "City is required")
+    city: z.string().min(1, "City is required"),
+    page: z.coerce.number().min(1).default(1)
   });
 
-  const list = querySchema.parse(request.query);
+  const {city, page} = querySchema.parse(request.query);
 
-  const { pets } = await listAvailableUseCase.execute(list);
+  const { pets, totalPages} = await listAvailableUseCase.execute({city, page});
 
-  return reply.status(200).send({ pets });
+  return reply.status(200).send({ pets, totalPages });
 }

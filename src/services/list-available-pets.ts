@@ -4,10 +4,12 @@ import { Pet } from "@prisma/client"
 
 interface ListAvailablePetsRequest {
   city: string
+  page: number
 }
 
 interface ListAvailablePetsResponse {
   pets: Pet[]
+  totalPages: number
 }
 
 export class ListAvailablePetsUseCase {
@@ -18,11 +20,15 @@ export class ListAvailablePetsUseCase {
 
   async execute({
     city,
+    page,
   }: ListAvailablePetsRequest): Promise<ListAvailablePetsResponse> {
+    const itemsPerPage = 20
+
     // Busca organizações na cidade
-    const organizations = await this.organizationRepository.findAvailableByCity(city);
+    const organizations = await this.organizationRepository.findAvailableByCity(city, page);
     
     let availablePets: Pet[] = [];
+    let totalPets = 0
     
     // Busca pets de cada organização
     for (const organization of organizations) {
@@ -30,10 +36,14 @@ export class ListAvailablePetsUseCase {
       
       // Adiciona todos os pets à lista (assumindo que todos estão disponíveis)
       availablePets = [...availablePets, ...petsFromOrganization];
+      totalPets += petsFromOrganization.length
     }
+
+    const totalPages = Math.ceil(totalPets / itemsPerPage)
     
     return {
       pets: availablePets,
+      totalPages,
     };
   }
 }
